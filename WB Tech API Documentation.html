@@ -1,0 +1,966 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WB Tech API Documentation</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p><a href="https://wbtech.ru/"><img src="https://static.tildacdn.com/tild6331-6233-4531-b361-336233323361/logo_1.svg" alt="Logo WB-Tech"></a></p>
+<h1 id="wb-tech-api">WB Tech API</h1>
+<h4 id="version-v1.0.0">Version: v1.0.0</h4>
+<h4 id="description-api-documentation-for-wb-tech-backend-intern.">Description: API Documentation for WB Tech (Backend Intern).</h4>
+<h4 id="github-repository-link"><a href="https://github.com/Vendetta-source/WB-Tech-backend-internship">GitHub repository link</a></h4>
+<h2 id="table-of-content">Table of content</h2>
+<h3 id="methods">Methods</h3>
+<ul>
+<li><a href="#Access">Access</a></li>
+<li><a href="#Authorizationandregistration">Authorization and Registration</a>
+<ul>
+<li><a href="#Registration">Registration</a></li>
+<li><a href="#Authorization">Authorization</a></li>
+<li><a href="#Deauthorization">Deauthorization</a></li>
+</ul>
+</li>
+<li><a href="#Users">Users</a>
+<ul>
+<li><a href="#allusers">List of users</a></li>
+<li><a href="#listarticlebyuser">List of articles by user</a></li>
+<li><a href="#subscribe">Subscribe</a></li>
+<li><a href="#unsubscribe">Unsubscribe</a></li>
+<li><a href="#artoffollusrs">Articles of followed users</a></li>
+</ul>
+</li>
+<li><a href="#Articles">Articles</a>
+<ul>
+<li><a href="#listartall">List of all articles</a></li>
+<li><a href="#addarticle">Add article</a></li>
+<li><a href="#readart">Mark an article as read</a></li>
+</ul>
+</li>
+</ul>
+<h2><a name="Access" style="text-decoration: none; color: #000000bf">Access</a></h2>
+<ul>
+<li>APIKey KeyParamName:X-API-Key KeyInQuery:false KeyInHeader:true</li>
+<li>Each method contains information about access rights: Authorized / Not authorized</li>
+<li>To send a request as an authorized user, you need to enter the “Authorization” key in the Header with the value “Token {API Key}”</li>
+</ul>
+<h2><a name="Authorizationandregistration" style="text-decoration: none; color: #000000bf">Authorization and Registration</a></h2>
+<p>This block contains information about the method of registering new users, as well as authorization and deauthorization of users.</p>
+<hr>
+<h3><a name="Registration" style="text-decoration: none; color: #000000bf"> Registration</a></h3>
+<p>Method of registering new users.</p>
+<pre><code>[POST] api/v1/auth/users/
+</code></pre>
+<ul>
+<li>Authorization required: No</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="body-parametrs">Body parametrs</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email</td>
+<td>User email</td>
+<td>-</td>
+</tr>
+<tr>
+<td>username</td>
+<td>The username of the user to be logged in as</td>
+<td>X</td>
+</tr>
+<tr>
+<td>password</td>
+<td>User password</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>201</td>
+<td>User successful created.</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "email":  "user4@mail.ru",  
+    "username":  "user4",  
+    "id":  5  
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>A required field value was not specified or the user already exists.</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "username":  [  
+		"A user with that username already exists."  
+	]  
+}
+</code></pre>
+<hr>
+<h3><a name="Authorization" style="text-decoration: none; color: #000000bf">Authorization</a></h3>
+<p>User authorization method.</p>
+<pre><code>[POST] api/v1/auth/token/login/
+</code></pre>
+<ul>
+<li>Authorization required: No</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="body-parametrs-1">Body parametrs</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>username</td>
+<td>Username</td>
+<td>X</td>
+</tr>
+<tr>
+<td>password</td>
+<td>User password</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-1">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>User authorized</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "auth_token":  "5b1241d5cbb834a555ac6a927901bfdb4fda5e0e"  
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Invalid data</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "non_field_errors":  [
+	    "Unable to log in with provided credentials."  
+    ]  
+ }
+</code></pre>
+<hr>
+<h3><a name="Deauthorization" style="text-decoration: none; color: #000000bf">Deauthorization</a></h3>
+<p>User deauthorization method.</p>
+<pre><code>[POST] api/v1/auth/token/logout/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="status-codes-2">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>204</td>
+<td>User successfully deauthorized</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>No content
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401</td>
+<td>Unauthorized user</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+    "detail": "Authentication credentials were not provided."
+}
+</code></pre>
+<h2><a name="Users" style="text-decoration: none; color: #000000bf">Users</a></h2>
+<p>This block contains information about user interaction methods.</p>
+<hr>
+<h3><a name="allusers" style="text-decoration: none; color: #000000bf">List of users</a></h3>
+<p>Show all users.</p>
+<pre><code>[GET] api/v1/users/
+</code></pre>
+<ul>
+<li>Authorization required: No</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="query-parameters">Query parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>?ordering=</td>
+<td>up/down</td>
+<td>Sort users by amount of posts</td>
+<td>-</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-3">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "count":  5,  
+    "next":  null,  
+    "previous":  null,  
+    "results":  [  
+	    {  
+		    "id":  3,  
+		    "username":  "user2",  
+		    "email":  "",  
+		    "article_count":  4  
+		},  
+		{  
+			"id":  4,  
+			"username":  "user3",  
+			"email":  "",  
+			"article_count":  4  
+		},  
+		{  
+			"id":  1,  
+			"username":  "user1",  
+			"email":  "user1@localhost",  
+			"article_count":  4  
+		},  
+		{  
+			"id":  2,  
+			"username":  "admin",  
+			"email":  "admin@admin.ru",  
+			"article_count":  2  
+		},  
+		{  
+			"id":  5,  
+			"username":  "user4",  
+			"email":  "",  
+			"article_count":  0  
+		}  
+	]  
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>204</td>
+<td>No content</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "count":  0,  
+    "next":  null,  
+    "previous":  null,  
+    "results":  []
+}
+</code></pre>
+<hr>
+<h3><a name="listarticlebyuser" style="text-decoration: none; color: #000000bf">List of articles by user</a></h3>
+<p>Show all articles by specified user.</p>
+<pre><code>[GET] api/v1/users/&lt;pk&gt;/
+</code></pre>
+<ul>
+<li>Authorization required: No</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="path-parameters">Path parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pk</td>
+<td>Integer</td>
+<td>User ID</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-4">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>[  
+    {  
+	    "id":  3,
+	    "title":  "Admin's article 2",  
+	    "content":  "text content",  
+	    "created_at":  "2022-11-07T11:36:00.782273Z",  
+	    "author":  2  
+	},  
+	{  
+		"id":  1,  
+		"title":  "Admin's article",  
+		"content":  "text content",  
+		"created_at":  "2022-11-07T09:24:48.740904Z",  
+		"author":  2  
+	}  
+]
+</code></pre>
+<hr>
+<h3><a name="subscribe" style="text-decoration: none; color: #000000bf">Subscribe</a></h3>
+<p>Creating a subscription to articles by the author.</p>
+<pre><code>[POST] api/v1/users/&lt;pk&gt;/subscribe/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="path-parameters-1">Path parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pk</td>
+<td>Integer</td>
+<td>User ID</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-5">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>201</td>
+<td>Subscription created</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+    "user": 2,
+    "author": 4
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Errors</td>
+</tr>
+</tbody>
+</table><p>Example responses:</p>
+<pre><code>{
+    "error":[
+	    "You are already subscribed"
+	]
+}
+{
+    "error":[
+	    "You cannot subscribe to yourself."
+	]
+}
+{
+	"error": "This pk is not valid!"
+}
+</code></pre>
+<hr>
+<h3><a name="unsubscribe" style="text-decoration: none; color: #000000bf">Unsubscribe</a></h3>
+<p>Unsubscribing from an author’s articles.</p>
+<pre><code>[POST] api/v1/users/&lt;pk&gt;/unsubscribe/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="path-parameters-2">Path parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pk</td>
+<td>Integer</td>
+<td>User ID</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-6">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>204</td>
+<td>Subscription deleted</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>No content
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Errors</td>
+</tr>
+</tbody>
+</table><p>Example responses:</p>
+<pre><code>{
+    "error": "Attempt to delete a non-existent subscription"
+}
+{
+	"error": "This pk is not valid!"
+}
+</code></pre>
+<hr>
+<h3><a name="artoffollusrs" style="text-decoration: none; color: #000000bf">Articles of followed users</a></h3>
+<p>Show articles from users who are subscribed to.</p>
+<pre><code>[GET] api/v1/users/subscribed_authors_articles/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="status-codes-7">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+	"count":11,
+	"next":"http://127.0.0.1:8000/api/v1/users/subscribed_authors_articles/?format=json&amp;limit=10&amp;offset=10",
+	"previous":null,
+	"results":[
+		{
+			"id":14,
+			"title":"User2 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:55.084738Z",
+			"author":3
+		},
+		{
+			"id":13,
+			"title":"User3 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:14.497580Z",
+			"author":4
+		},
+		{
+			"id":12,
+			"title":"User3 article 3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:01.228795Z",
+			"author":4
+		},
+		{
+			"id":11,
+			"title":"User3 article 2",
+			"content":"text content",
+			"created_at":"2022-11-09T18:54:49.978936Z",
+			"author":4
+		},
+		{
+			"id":10,
+			"title":"User3 article 1",
+			"content":"text content",
+			"created_at":"2022-11-09T18:54:23.198556Z",
+			"author":4
+		},
+		{
+			"id":9,
+			"title":"User1 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:53:36.675860Z",
+			"author":1
+		},
+		{
+			"id":8,
+			"title":"User2 article 3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:53:20.891931Z",
+			"author":3
+		},
+		{
+			"id":7,
+			"title":"User1 article3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:52:59.487895Z",
+			"author":1
+		},
+		{
+			"id":6,
+			"title":"User2 article 2",
+			"content":"text content",
+			"created_at":"2022-11-09T18:52:28.732298Z",
+			"author":3
+		},
+		{
+			"id":5,
+			"title":"User2 article",
+			"content":"text content",
+			"created_at":"2022-11-08T10:13:21.355143Z",
+			"author":3
+		}
+	]
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>204</td>
+<td>No articles</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+    "count":0,
+    "next":null,
+    "previous":null,
+    "results":[]
+}
+</code></pre>
+<hr>
+<h2><a name="Articles" style="text-decoration: none; color: #000000bf">Articles</a></h2>
+<p>This block contains information about articles interaction methods.</p>
+<hr>
+<h3><a name="listartall" style="text-decoration: none; color: #000000bf">List of all articles</a></h3>
+<p>Show all articles.</p>
+<pre><code>[GET] api/v1/articles/
+</code></pre>
+<ul>
+<li>Authorization required: No</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="status-codes-8">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+	"count":14,
+	"next":"http://127.0.0.1:8000/api/v1/articles/?limit=10&amp;offset=10",
+	"previous":null,
+	"results":[
+		{
+			"id":14,
+			"title":"User2 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:55.084738Z",
+			"author":3
+		},
+		{
+			"id":13,
+			"title":"User3 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:14.497580Z",
+			"author":4
+		},
+		{
+			"id":12,
+			"title":"User3 article 3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:55:01.228795Z",
+			"author":4
+		},
+		{
+			"id":11,
+			"title":"User3 article 2",
+			"content":"text content",
+			"created_at":"2022-11-09T18:54:49.978936Z",
+			"author":4
+		},
+		{
+			"id":10,
+			"title":"User3 article 1",
+			"content":"text content",
+			"created_at":"2022-11-09T18:54:23.198556Z",
+			"author":4
+		},
+		{
+			"id":9,
+			"title":"User1 article 4",
+			"content":"text content",
+			"created_at":"2022-11-09T18:53:36.675860Z",
+			"author":1
+		},
+		{
+			"id":8,
+			"title":"User2 article 3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:53:20.891931Z",
+			"author":3
+		},
+		{
+			"id":7,
+			"title":"User1 article3",
+			"content":"text content",
+			"created_at":"2022-11-09T18:52:59.487895Z",
+			"author":1
+		},
+		{
+			"id":6,
+			"title":"User2 article 2",
+			"content":"text content",
+			"created_at":"2022-11-09T18:52:28.732298Z",
+			"author":3
+		},
+		{
+			"id":5,
+			"title":"User2 article",
+			"content":"text content",
+			"created_at":"2022-11-08T10:13:21.355143Z",
+			"author":3
+		}
+	]
+}
+</code></pre>
+<hr>
+<h3><a name="addarticle" style="text-decoration: none; color: #000000bf">Add article</a></h3>
+<p>Method for adding an article.</p>
+<pre><code>[POST] api/v1/articles/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="body-parameters">Body parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>Article title</td>
+<td>X</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>Article content</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-9">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>201</td>
+<td>Article added</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{  
+    "id":  22,  
+    "title":  "Admin article 5",  
+    "content":  "text content",  
+    "created_at":  "2022-11-10T12:10:56.406302Z",  
+    "author":  2  
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Errors</td>
+</tr>
+</tbody>
+</table><p>Example responses:</p>
+<pre><code>{  
+    "title":  [  
+	    "This field may not be blank."  
+	],  
+    "content":  [  
+	    "This field may not be blank."  
+	]  
+}
+</code></pre>
+<hr>
+<h3><a name="readart" style="text-decoration: none; color: #000000bf">Mark an article as read</a></h3>
+<p>Method for adding an article.</p>
+<pre><code>[POST] api/v1/articles/&lt;pk&gt;/read_mark/
+</code></pre>
+<ul>
+<li>Authorization required: Yes</li>
+<li>Content Type -   <code>application/json</code></li>
+</ul>
+<h4 id="path-parameters-3">Path parameters</h4>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pk</td>
+<td>integer</td>
+<td>Article id</td>
+<td>X</td>
+</tr>
+</tbody>
+</table><h4 id="status-codes-10">Status codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>201</td>
+<td>Message</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+<pre><code>{
+    "message": "You read this article now."
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Errors</td>
+</tr>
+</tbody>
+</table><p>Example responses:</p>
+<pre><code>{
+    "error": "Object does not exists."
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+</tr>
+</tbody>
+</table><p>Example responses:</p>
+<pre><code>{
+    "error": "Article already read."
+}
+</code></pre>
+<hr>
+</div>
+</body>
+
+</html>
